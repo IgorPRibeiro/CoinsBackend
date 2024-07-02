@@ -13,6 +13,19 @@
       "database": "igcoins",
       "username": "root",
       "password": "igor1111"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MariaDB",
+      "name": "igcoins",
+      "database": "igcoins",
+      "username": "root"
     }
   ]
 }
