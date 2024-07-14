@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mysql = require("../mysql").pool;
+const login = require("../middleware/login")
 
 router.get("/", (req, res, next) => {
   mysql.getConnection((error, conn) => {
@@ -43,7 +44,7 @@ router.get("/", (req, res, next) => {
   });
 });
 
-router.post("/", (req, res, next) => {
+router.post("/", login.obrigatorio , (req, res, next) => {
   mysql.getConnection((error, conn) => {
     if (error) {
       return res.status(500).send({ error: error });
@@ -123,7 +124,7 @@ router.get("/:id_pedidos", (req, res, next) => {
   });
 });
 
-router.patch("/", (req, res, next) => {
+router.patch("/",login.obrigatorio , (req, res, next) => {
   mysql.getConnection((error, conn) => {
     if (error) {
       return res.status(500).send({ error: error });
@@ -163,7 +164,7 @@ router.patch("/", (req, res, next) => {
   });
 });
 
-router.delete("/", (req, res, next) => {
+router.delete("/",login.obrigatorio , (req, res, next) => {
   mysql.getConnection((error, conn) => {
     if (error) {
       return res.status(500).send({ error: error });
