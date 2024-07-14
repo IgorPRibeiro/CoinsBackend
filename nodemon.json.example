@@ -1,0 +1,10 @@
+{
+  "env": {
+    "MYSQL_USER": "name",
+    "MYSQL_PASSWORD": "senha",
+    "MYSQL_DATABASE": "namedatabase",
+    "MYSQL_HOST": "localhost",
+    "MYSQL_PORT": 0000,
+    "JWT_KEY": ""
+  }
+}
