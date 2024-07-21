@@ -1,7 +1,11 @@
+
+const cors = require('cors');
 const express = require("express");
 const app = express();
+app.use(cors()); 
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+app.use(express.json());
 
 const rotaProdutos = require("./routes/produtos");
 const rotaPedidos = require("./routes/pedidos");

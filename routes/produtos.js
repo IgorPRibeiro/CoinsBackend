@@ -44,7 +44,7 @@ router.get("/",ProdutosController.getProdutos);
 
 router.post("/",login.obrigatorio, upload.single("product_image"), ProdutosController.postProduto);
 
-router.get("/:id_produtos", ProdutosController.getByIdProduct);
+router.get("/:id_produto", ProdutosController.getByIdProduct);
 
 router.patch("/",login.obrigatorio,  ProdutosController.updateProduct);
 

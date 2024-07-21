@@ -13,14 +13,14 @@ exports.getProdutos = (req, res, next) => {
       const response = {
         quantidade: result.length,
         produtos: result.map((prod) => ({
-          id_produtos: prod.id_produtos,
+          id_produto: prod.id_produto,
           nome: prod.nome,
           preco: prod.preco,
           imagem_produto: prod.imagem_produto,
           request: {
             type: "GET",
             description: "Product details",
-            url: "http://localhost:3000/produtos/" + prod.id_produtos,
+            url: "http://localhost:3000/produtos/" + prod.id_produto,
           },
         })),
       };
@@ -52,7 +52,7 @@ exports.postProduto = (req, res, next) => {
         const response = {
           mensage: "Produto inserido com sucesso",
           createdProduct: {
-            id_product: result.id_produtos,
+            id_product: result.id_produto,
             nome: req.body.nome,
             preco: req.body.preco,
             imagem_produto: req.file.path,
@@ -77,8 +77,8 @@ exports.getByIdProduct = (req, res, next) => {
     }
 
     conn.query(
-      "SELECT * FROM produtos WHERE id_produtos = ?;",
-      [req.params.id_produtos],
+      "SELECT * FROM produtos WHERE id_produto = ?;",
+      [req.params.id_produto],
       (error, result, fields) => {
         if (error) {
           return res.status(500).send({ error: error });
@@ -93,7 +93,7 @@ exports.getByIdProduct = (req, res, next) => {
         const response = {
           mensage: "Produto regastado com sucesso",
           product: {
-            id_product: result[0].id_produtos,
+            id_product: result[0].id_produto,
             nome: result[0].nome,
             preco: result[0].preco,
             imagem_produto: result[0].imagem_produto,
@@ -121,12 +121,12 @@ exports.updateProduct = (req, res, next) => {
              SET nome = ?,
                  preco = ?,
                  imagem_produto = ?
-             WHERE id_produtos = ?`,
+             WHERE id_produto = ?`,
       [
         req.body.nome,
         req.body.preco,
         req.body.imagem_produto,
-        req.body.id_produtos,
+        req.body.id_produto,
       ],
       (error, result, field) => {
         // release connection
@@ -139,13 +139,13 @@ exports.updateProduct = (req, res, next) => {
         const response = {
           message: "Produto atualizado com sucesso",
           product: {
-            id_product: req.body.id_produtos,
+            id_product: req.body.id_produto,
             nome: req.body.nome,
             preco: req.body.preco,
             request: {
               type: "POST",
               description: "Update the product",
-              url: "http://localhost:3000/produtos/" + req.body.id_produtos,
+              url: "http://localhost:3000/produtos/" + req.body.id_produto,
             },
           },
         };
@@ -162,8 +162,8 @@ exports.deleteProduct = (req, res, next) => {
       return res.status(500).send({ error: error });
     }
     conn.query(
-      `DELETE FROM produtos WHERE id_produtos = ?`,
-      [req.body.id_produtos],
+      `DELETE FROM produtos WHERE id_produto = ?`,
+      [req.body.id_produto],
       (error, result, field) => {
         conn.release();
 

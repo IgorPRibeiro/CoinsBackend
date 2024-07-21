@@ -19,13 +19,13 @@ exports.signUp = (req, res, next) => {
             // 409 CONFLICT
             res.status(409).send({ mensage: "Alredy registered users " });
           } else {
-            bcrypt.hash(req.body.senha, 10, (errB, hash) => {
+            bcrypt.hash(req.body.password, 10, (errB, hash) => {
               if (errB) {
                 return res.status(500).send({ error: errB });
               }
               conn.query(
-                `INSERT INTO usuarios (email,senha) VALUES (?,?)`,
-                [req.body.email, hash],
+                `INSERT INTO usuarios (email,nome,password) VALUES (?,?,?)`,
+                [req.body.email,req.body.name,hash],
                 (error, results) => {
                   conn.release();
                   if (error) {
@@ -36,6 +36,7 @@ exports.signUp = (req, res, next) => {
                     usuarioCriado: {
                       id_usuarios: results.insertId,
                       email: req.body.email,
+                      name: req.body.nome,
                     },
                   };
                   return res.status(201).send(response);
@@ -64,7 +65,7 @@ exports.login = (req, res, next) => {
         if (results.length < 1) {
           return res.status(401).send("Authentication failure");
         }
-        bcrypt.compare(req.body.senha, results[0].senha, (errb, result) => {
+        bcrypt.compare(req.body.password, results[0].password, (errb, result) => {
           if (errb) {
             return res.status(500).send({ error: errb });
           }
