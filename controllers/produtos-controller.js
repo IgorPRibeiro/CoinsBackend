@@ -30,15 +30,15 @@ exports.getProdutos = (req, res, next) => {
 };
 
 exports.postProduto = (req, res, next) => {
-  console.log(req.file);
   mysql.getConnection((error, conn) => {
     if (error) {
       console.log(error);
       return res.status(500).send({ error: error });
     }
+  
     conn.query(
-      "INSERT INTO produtos (nome,preco,imagem_produto) VALUES (?,?,?);",
-      [req.body.nome, req.body.preco, req.file.path],
+      "INSERT INTO produtos (nome,preco,image_product,quantidade) VALUES (?,?,?,?);",
+      [req.body.name, req.body.price, req.file.path,req.body.quantity],
       (error, result, field) => {
         // liberar connection
         conn.release();
@@ -53,9 +53,10 @@ exports.postProduto = (req, res, next) => {
           mensage: "Produto inserido com sucesso",
           createdProduct: {
             id_product: result.id_produto,
-            nome: req.body.nome,
-            preco: req.body.preco,
-            imagem_produto: req.file.path,
+            name: req.body.name,
+            price:  req.body.price,
+            image_produto: req.file.path,
+            quantity: req.body.quantity,
             request: {
               type: "POST",
               description: "Create a new product",

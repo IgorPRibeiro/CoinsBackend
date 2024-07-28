@@ -74,16 +74,50 @@ exports.login = (req, res, next) => {
               {
                 id_user: results[0].id_usuario,
                 email: results[0].email,
+                name: results[0].nome,
               },
               process.env.JWT_KEY,
               {
                 expiresIn: "1h",
               }
             );
-            return res.status(200).send({ mensage: "Authentication succes", token: token});
+            return res.status(200).send({ mensage: "Authentication succes", token: token,});
           }
           return res.status(401).send({ mensage: "Authentication failure" });
         });
       });
     });
   }
+
+exports.getUserProfile = (req, res, next) => {
+  mysql.getConnection((err, conn) => {
+    if (err) {
+      return res.status(500).send({ error: err });
+    }
+
+    const token = req.headers.authorization.split(' ')[1];
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_KEY);
+      const userId = decoded.id_user;
+      const query = `SELECT id_usuario, email, nome FROM usuarios WHERE id_usuario = ?`;
+      conn.query(query, [userId], (error, results, fields) => {
+        conn.release();
+        if (error) {
+          return res.status(500).send({ error: error });
+        }
+        if (results.length < 1) {
+          return res.status(404).send({ message: "User not found" });
+        }
+        return res.status(200).send({
+          id: results[0].id_usuario,
+          email: results[0].email,
+          name: results[0].nome
+        });
+      });
+    } catch (error) {
+      return res.status(401).send({ message: "Invalid token" });
+    }
+  });
+}
+
+  

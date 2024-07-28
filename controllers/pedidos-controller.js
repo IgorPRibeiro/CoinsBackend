@@ -14,7 +14,6 @@ exports.getPedidos = (req, res, next) => {
           ON produtos.id_produto = pedidos.id_produto
       `,
       (err, result, fields) => {
-        console.log(result, err);
         if (err) {
           return res.status(500).send({ error: error });
         }
@@ -51,7 +50,6 @@ exports.postPedidos = (req, res, next) => {
       "SELECT * FROM produtos WHERE id_produto = ?",
       [req.body.id_produto],
       (err, result, field) => {
-        console.log(result);
         if (result.length == 0) {
           return res.status(404).send({
             mensagem: "Not find a product with this ID",
