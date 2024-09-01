@@ -24,8 +24,8 @@ exports.signUp = (req, res, next) => {
                 return res.status(500).send({ error: errB });
               }
               conn.query(
-                `INSERT INTO usuarios (email,nome,password) VALUES (?,?,?)`,
-                [req.body.email,req.body.name,hash],
+                `INSERT INTO usuarios (email,nome,password,balance) VALUES (?,?,?,?)`,
+                [req.body.email,req.body.name,hash,999999],
                 (error, results) => {
                   conn.release();
                   if (error) {
@@ -99,7 +99,7 @@ exports.getUserProfile = (req, res, next) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_KEY);
       const userId = decoded.id_user;
-      const query = `SELECT id_usuario, email, nome FROM usuarios WHERE id_usuario = ?`;
+      const query = `SELECT id_usuario, email, balance, nome FROM usuarios WHERE id_usuario = ?`;
       conn.query(query, [userId], (error, results, fields) => {
         conn.release();
         if (error) {
@@ -111,7 +111,8 @@ exports.getUserProfile = (req, res, next) => {
         return res.status(200).send({
           id: results[0].id_usuario,
           email: results[0].email,
-          name: results[0].nome
+          name: results[0].nome,
+          balance: results[0].balance
         });
       });
     } catch (error) {

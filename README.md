@@ -9,5 +9,5 @@ cruzada com outros servidores e especifica quais dominios acessam seus recursos
 ```docker run -p 3306:3306 --name mysql-mariadb -e MYSQL_ROOT_PASSWORD=YOUR_PASSWORD -d mariadb```
 
 ## Rodar em outra porta
-set PORT=3001 && npm run start
 mudar porta no env
+set PORT=3001 && npm run start
